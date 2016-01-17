@@ -48,7 +48,7 @@
             <div ng-controller="customersCtrl">
                 <form ng-submit="regPublisher()" name="myForm" class="form-inline">
                     <input type="text" ng-model="username" size="30"
-                           placeholder="輸入Twister用戶名" required class="form-control">
+                           placeholder="輸入Twister用戶名" required ng-maxlength="16" class="form-control">
                     <input class="btn btn-primary" type="submit" value="登記" ng-disabled="btnDisabled || myForm.$invalid">
                 </form>
                 <div><p>{{info}}</p></div>

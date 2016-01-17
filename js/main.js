@@ -1,6 +1,13 @@
 
 var app = angular.module('acgshApp', ['ngAnimate','ngSanitize','ngEmbed']);
 app.controller('customersCtrl', function($scope, $http,$location,$anchorScroll,$timeout) {
+    // PageType: all, category, publisher.
+    $scope.currentPageType="all";
+    $scope.currentPublisher="";
+    $scope.currentCategory="";
+    $scope.currentPage=0;
+
+
     $scope.options = {
         'linkTarget': '_blank',
         'image'     : {
@@ -51,11 +58,20 @@ app.controller('customersCtrl', function($scope, $http,$location,$anchorScroll,$
 
     };
 
-    $scope.currentPage=0;
+
+    function getRequestStr() {
+        if ($scope.currentPageType=="category"){
+            return "./api/categoryposts/"+$scope.currentCategory+"/";
+        }
+        if ($scope.currentPageType=="publisher"){
+            return "./api/pubposts/"+$scope.currentPublisher+"/";
+        }
+        return "./api/posts/";
+    }
     $scope.prevPage = function() {
         if($scope.currentPage>0){
             $scope.currentPage=$scope.currentPage-1;
-            $http.get("./api/posts/"+($scope.currentPage))
+            $http.get(getRequestStr()+($scope.currentPage))
                 .then(function(response) {
                     $scope.posts = response.data;
                     angular.forEach($scope.posts, function(value, key) {
@@ -68,7 +84,7 @@ app.controller('customersCtrl', function($scope, $http,$location,$anchorScroll,$
     };
     $scope.nextPage = function() {
         $scope.currentPage=$scope.currentPage+1;
-            $http.get("./api/posts/"+($scope.currentPage))
+            $http.get(getRequestStr()+($scope.currentPage))
                 .then(function(response) {
                     $scope.posts = response.data;
                     angular.forEach($scope.posts, function(value, key) {
@@ -79,6 +95,39 @@ app.controller('customersCtrl', function($scope, $http,$location,$anchorScroll,$
                 });
 
     };
+
+    $scope.showCategory = function(category) {
+        console.log(category);
+        $scope.currentPage=0;
+        $scope.currentPageType="category";
+        $scope.currentCategory=category;
+        $http.get("./api/categoryposts/"+category+"/0")
+            .then(function(response) {
+                $scope.posts = response.data;
+                angular.forEach($scope.posts, function(value, key) {
+                    $scope.showDesc[value.n+value.k] = false;
+                    value.replies=[];
+                });
+                //console.log($scope.showDesc);
+
+            });
+    }
+    $scope.showPublisher = function(n) {
+        $scope.currentPage=0;
+        $scope.currentPageType="publisher";
+        $scope.currentPublisher=n;
+
+        $http.get("./api/pubposts/"+n+"/0")
+            .then(function(response) {
+                $scope.posts = response.data;
+                angular.forEach($scope.posts, function(value, key) {
+                    $scope.showDesc[value.n+value.k] = false;
+                    value.replies=[];
+                });
+                //console.log($scope.showDesc);
+
+            });
+    }
 
 });
 

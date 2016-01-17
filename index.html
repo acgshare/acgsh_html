@@ -36,7 +36,7 @@
 
     <div class="container-fluid" ng-app="acgshApp" >
       <div class="row">
-        <div class=" col-lg-12  main">
+        <div class=" col-lg-12  main" ng-controller="customersCtrl">
           <h1 class="page-header"></h1>
 
 
@@ -45,7 +45,19 @@
           </div>
 
           <h2>去中心化的ACG資源發佈方式，詳見↑上方Help鏈接</h2>
-          <div class="table-responsive"   ng-controller="customersCtrl">
+          <div class="row placeholders">
+            <span>分類:</span>
+            <a href="" ng-click='showCategory("動畫")'>動畫</a>
+            <a href="" ng-click='showCategory("季度全集")'>季度全集</a>
+            <a href="" ng-click='showCategory("漫畫")'>漫畫</a>
+            <a href="" ng-click='showCategory("音樂")'>音樂</a>
+            <a href="" ng-click='showCategory("日劇")'>日劇</a>
+            <a href="" ng-click='showCategory("ＲＡＷ")'>ＲＡＷ</a>
+            <a href="" ng-click='showCategory("遊戲")'>遊戲</a>
+            <a href="" ng-click='showCategory("特攝")'>特攝</a>
+            <a href="" ng-click='showCategory("其他")'>其他</a>
+          </div>
+          <div class="table-responsive"   >
             <table class="table table-striped table-hover table-sm table-bordered ctab"  >
               <thead class="thead-default">
                 <tr>
@@ -60,7 +72,7 @@
               <tbody>
                 <tr ng-repeat="post in posts">
                   <td class="text-lg-center">{{post.time*1000 | date:'yyyy/MM/dd HH:mm'}}</td>
-                  <td class="text-lg-center">{{post.category}}</td>
+                  <td class="text-lg-center"><a href="" ng-click="showCategory(post.category)">{{post.category}}</a></td>
                   <td><div><a id="anchor{{$index}}" href="" ng-click="setShowDesc($event,$index,post)">{{post.title}}</a></div>
                     <div class="description " ng-show="showDesc[post.n+post.k]" class="animate-show">
                       <br/>
@@ -76,7 +88,7 @@
                   </td>
                   <td class="text-lg-center"><a href="{{post.magnet}}&tr=http%3a%2f%2fmgtracker.org%3a2710%2fannounce&tr=http%3a%2f%2ftracker.openbittorrent.com%3a80%2fannounce&tr=http%3a%2f%2ftracker.publicbt.com%3a80%2fannounce&tr=http%3a%2f%2fopen.acgtracker.com%3a1096%2fannounce&tr=udp%3a%2f%2fmgtracker.org%3a2710%2fannounce"><i class="fa fa-magnet fa-lg"></i></a></td>
                   <td class="text-lg-center">{{post.size | bytes:1}}</td>
-                  <td class="text-lg-center">{{post.n}}</td>
+                  <td class="text-lg-center"><a href="" ng-click="showPublisher(post.n)">{{post.n}}</a></td>
 
                 </tr>
 
