@@ -1,12 +1,12 @@
 
 var app = angular.module('acgshApp', ['ngAnimate','ngSanitize','ngEmbed']);
 app.controller('customersCtrl', function($scope, $http,$location,$anchorScroll,$timeout) {
-    // PageType: all, category, publisher.
+    // PageType: all, category, publisher, search
     $scope.currentPageType="all";
     $scope.currentPublisher="";
     $scope.currentCategory="";
     $scope.currentPage=0;
-
+    $scope.searchString="";
 
     $scope.options = {
         'linkTarget': '_blank',
@@ -47,7 +47,7 @@ app.controller('customersCtrl', function($scope, $http,$location,$anchorScroll,$
                 $scope.showDesc[key] = false;
             });
 
-            $http.get("./api/pubreply/"+post.n+"&"+post.k)
+            $http.get("./api/pubreply/"+post.n+"/"+post.k)
                 .then(function(response) {
                     post.replies = response.data;
                 });
@@ -59,19 +59,22 @@ app.controller('customersCtrl', function($scope, $http,$location,$anchorScroll,$
     };
 
 
-    function getRequestStr() {
+    function getRequestStr(page) {
         if ($scope.currentPageType=="category"){
-            return "./api/categoryposts/"+$scope.currentCategory+"/";
+            return "./api/categoryposts/"+$scope.currentCategory+"/"+page;
         }
         if ($scope.currentPageType=="publisher"){
-            return "./api/pubposts/"+$scope.currentPublisher+"/";
+            return "./api/pubposts/"+$scope.currentPublisher+"/"+page;
         }
-        return "./api/posts/";
+        if ($scope.currentPageType=="search"){
+            return "./api/search/"+page+"/"+$scope.searchString;
+        }
+        return "./api/posts/"+page;
     }
     $scope.prevPage = function() {
         if($scope.currentPage>0){
             $scope.currentPage=$scope.currentPage-1;
-            $http.get(getRequestStr()+($scope.currentPage))
+            $http.get(getRequestStr($scope.currentPage))
                 .then(function(response) {
                     $scope.posts = response.data;
                     angular.forEach($scope.posts, function(value, key) {
@@ -84,7 +87,7 @@ app.controller('customersCtrl', function($scope, $http,$location,$anchorScroll,$
     };
     $scope.nextPage = function() {
         $scope.currentPage=$scope.currentPage+1;
-            $http.get(getRequestStr()+($scope.currentPage))
+            $http.get(getRequestStr($scope.currentPage))
                 .then(function(response) {
                     $scope.posts = response.data;
                     angular.forEach($scope.posts, function(value, key) {
@@ -128,6 +131,30 @@ app.controller('customersCtrl', function($scope, $http,$location,$anchorScroll,$
 
             });
     }
+
+    $scope.search = function(n) {
+        $scope.currentPage=0;
+        $scope.currentPageType="search";
+
+        $http.get("./api/search/0/"+$scope.searchString)
+            .then(function(response) {
+                $scope.posts = response.data;
+                angular.forEach($scope.posts, function(value, key) {
+                    $scope.showDesc[value.n+value.k] = false;
+                    value.replies=[];
+                });
+                //console.log($scope.showDesc);
+
+            });
+    }
+
+    // table order
+    $scope.predicate = '';
+    $scope.reverse = true;
+    $scope.order = function(predicate) {
+        $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+        $scope.predicate = predicate;
+    };
 
 });
 

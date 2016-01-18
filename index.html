@@ -20,7 +20,7 @@
     <link href="css/main.css" rel="stylesheet">
   </head>
 
-  <body>
+  <body ng-app="acgshApp"  ng-controller="customersCtrl">
 
     <nav class="navbar navbar-dark navbar-fixed-top bg-inverse">
       <a class="navbar-brand" href="index.html">ACGSH</a>
@@ -31,12 +31,15 @@
           <a class="nav-item nav-link" href="http://github.com/acgshare/acgsh">Open Source</a>
           <a class="nav-item nav-link" href="#">Help</a>
         </nav>
+        <form  ng-submit="search()" class="pull-xs-right">
+          <input type="text" size="35" ng-model="searchString" class="form-control" placeholder="Search...">
+        </form>
       </div>
     </nav>
 
-    <div class="container-fluid" ng-app="acgshApp" >
+    <div class="container-fluid" >
       <div class="row">
-        <div class=" col-lg-12  main" ng-controller="customersCtrl">
+        <div class=" col-lg-12  main">
           <h1 class="page-header"></h1>
 
 
@@ -58,19 +61,24 @@
             <a href="" ng-click='showCategory("其他")'>其他</a>
           </div>
           <div class="table-responsive"   >
+            <div class="nav_title"  >
+              <a href="" ng-click="prevPage()">上一頁</a>
+              第 {{currentPage+1}} 頁
+              <a href="" ng-click="nextPage()">下一頁</a>
+            </div>
             <table class="table table-striped table-hover table-sm table-bordered ctab"  >
               <thead class="thead-default">
                 <tr>
-                  <th class="text-lg-center">張貼日期</th>
-                  <th class="text-lg-center">分類</th>
-                  <th class="text-lg-center">標題</th>
+                  <th class="text-lg-center clickble" ng-class="{'bg-info': predicate === 'time'}" ng-click="order('time')">張貼日期<span class="sortorder" ng-show="predicate === 'time'" ng-class="{reverse:reverse}"></span></th>
+                  <th class="text-lg-center clickble" ng-class="{'bg-info': predicate === 'category'}" ng-click="order('category')">分類<span class="sortorder" ng-show="predicate === 'category'" ng-class="{reverse:reverse}"></span></th>
+                  <th class="text-lg-center clickble" ng-class="{'bg-info': predicate === 'title'}" ng-click="order('title')">標題<span class="sortorder" ng-show="predicate === 'title'" ng-class="{reverse:reverse}"></span></th>
                   <th class="text-lg-center">磁鏈</th>
-                  <th class="text-lg-center">大小</th>
-                  <th class="text-lg-center">發佈人</th>
+                  <th class="text-lg-center clickble" ng-class="{'bg-info': predicate === 'size'}" ng-click="order('size')">大小<span class="sortorder" ng-show="predicate === 'size'" ng-class="{reverse:reverse}"></span></th>
+                  <th class="text-lg-center clickble" ng-class="{'bg-info': predicate === 'n'}" ng-click="order('n')">發佈人<span class="sortorder" ng-show="predicate === 'n'" ng-class="{reverse:reverse}"></span></th>
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="post in posts">
+                <tr ng-repeat="post in posts | orderBy:predicate:reverse">
                   <td class="text-lg-center">{{post.time*1000 | date:'yyyy/MM/dd HH:mm'}}</td>
                   <td class="text-lg-center"><a href="" ng-click="showCategory(post.category)">{{post.category}}</a></td>
                   <td><div><a id="anchor{{$index}}" href="" ng-click="setShowDesc($event,$index,post)">{{post.title}}</a></div>
