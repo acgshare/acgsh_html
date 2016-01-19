@@ -32,7 +32,7 @@
           <a class="nav-item nav-link" href="#">Help</a>
         </nav>
         <form  ng-submit="search()" class="pull-xs-right">
-          <input type="text" size="35" ng-model="searchString" class="form-control" placeholder="Search...">
+          <input type="text" size="35" ng-model="searchString" class="form-control" placeholder="搜索...">
         </form>
       </div>
     </nav>
@@ -84,7 +84,7 @@
                   <td><div><a id="anchor{{$index}}" href="" ng-click="setShowDesc($event,$index,post)">{{post.title}}</a></div>
                     <div class="description " ng-show="showDesc[post.n+post.k]" class="animate-show">
                       <br/>
-                      <div><i class="fa fa-magnet fa-lg">&nbsp;</i><a href="{{post.magnet}}&tr=http%3a%2f%2fmgtracker.org%3a2710%2fannounce&tr=http%3a%2f%2ftracker.openbittorrent.com%3a80%2fannounce&tr=http%3a%2f%2ftracker.publicbt.com%3a80%2fannounce&tr=http%3a%2f%2fopen.acgtracker.com%3a1096%2fannounce&tr=udp%3a%2f%2fmgtracker.org%3a2710%2fannounce">{{post.magnet}}</a></div>
+                      <div><i class="fa fa-magnet fa-lg">&nbsp;</i><a href="{{post.magnet}}&tr=http%3a%2f%2fopen.acgtracker.com%3a1096%2fannounce&tr=http%3a%2f%2fmgtracker.org%3a2710%2fannounce&tr=http%3a%2f%2ftracker.openbittorrent.com%3a80%2fannounce&tr=http%3a%2f%2ftracker.publicbt.com%3a80%2fannounce&tr=udp%3a%2f%2fmgtracker.org%3a2710%2fannounce">{{post.magnet}}</a></div>
 
                       <blockquote ng-repeat="reply in post.replies | orderBy:'time'" class="blockquote">
                         <!--<p class="m-b-0 content" ng-bind-html="reply.msg|linky"></p>-->
@@ -94,7 +94,7 @@
                       <br/>
                     </div>
                   </td>
-                  <td class="text-lg-center"><a href="{{post.magnet}}&tr=http%3a%2f%2fmgtracker.org%3a2710%2fannounce&tr=http%3a%2f%2ftracker.openbittorrent.com%3a80%2fannounce&tr=http%3a%2f%2ftracker.publicbt.com%3a80%2fannounce&tr=http%3a%2f%2fopen.acgtracker.com%3a1096%2fannounce&tr=udp%3a%2f%2fmgtracker.org%3a2710%2fannounce"><i class="fa fa-magnet fa-lg"></i></a></td>
+                  <td class="text-lg-center"><a href="{{post.magnet}}&tr=http%3a%2f%2fopen.acgtracker.com%3a1096%2fannounce&tr=http%3a%2f%2fmgtracker.org%3a2710%2fannounce&tr=http%3a%2f%2ftracker.openbittorrent.com%3a80%2fannounce&tr=http%3a%2f%2ftracker.publicbt.com%3a80%2fannounce&tr=udp%3a%2f%2fmgtracker.org%3a2710%2fannounce"><i class="fa fa-magnet fa-lg"></i></a></td>
                   <td class="text-lg-center">{{post.size | bytes:1}}</td>
                   <td class="text-lg-center"><a href="" ng-click="showPublisher(post.n)">{{post.n}}</a></td>
 
