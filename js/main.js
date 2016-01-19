@@ -150,11 +150,12 @@ app.controller('customersCtrl', function($scope, $http,$location,$anchorScroll,$
 
     // table order
     $scope.predicate = '';
-    $scope.reverse = true;
+    $scope.reverse = false;
     $scope.order = function(predicate) {
-        $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+        $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : true;
         $scope.predicate = predicate;
     };
+    $scope.order("time");
 
 });
 
